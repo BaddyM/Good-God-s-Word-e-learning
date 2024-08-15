@@ -1,0 +1,178 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary:rgb(16, 113, 248);
+    --primary-light:rgba(16, 113, 248, 0.281);
+    --secondary:rgba(241, 8, 8, 0.818);
+    --body:whitesmoke;
+}
+
+@font-face {
+    font-family: "roboto" ;
+    src: url("./fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "bondoni" ;
+    src: url("./fonts/NotoSerif-VariableFont_wdth\,wght.ttf");
+}
+
+input,
+button,
+textarea,
+select{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border: 2px solid var(--primary) !important;
+}
+
+.submit-btn{
+    background: var(--primary);
+    padding: 5px 20px;
+    border: none;
+    text-transform: uppercase;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    border: 1px solid transparent;
+    transition: all ease-in-out .3s;
+}
+
+.submit-btn-disabled{
+    background: rgb(161, 161, 161);
+    padding: 5px 20px;
+    border: none;
+    text-transform: uppercase;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    border: 1px solid transparent;
+    transition: all ease-in-out .3s;
+}
+
+.submit-btn:hover{
+    border: 1px solid var(--primary);
+    background: white;
+    color: var(--primary);
+}
+
+/*------------------------------------- Top Header ------------------------------------------*/
+body{
+    font-family: "bondoni";
+    background: var(--body);
+}
+.nav-bar{
+    background: var(--primary);
+    width: 20%;
+    padding: 10px 10px;
+}
+.nav-bar ul{
+    list-style: none;
+    padding: 0;
+}
+
+.nav-bar a{
+    text-decoration: none;
+    color: white;
+}
+.nav-bar li{
+    padding: 10px;
+    background: transparent;
+    margin-bottom: 10px;
+    transition: all ease-in-out .4s;
+}
+.nav-bar li:hover{
+    background: white;
+}
+.nav-bar a:hover{
+    color: var(--primary);
+}
+
+.body_container{
+    display: flex;
+}
+
+.close-menu{
+    display: none;
+}
+
+.debit_card input{
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
+
+.body-section{
+    display: block !important;
+    width: 80%;
+    height: 100%;
+}
+
+.blue-gradient{
+    background: linear-gradient(108.7deg, rgb(34, 219, 231) -0.9%, rgb(52, 118, 246) 88.7%);
+}
+
+.landing > div > div{
+    cursor: pointer;
+    transition: all ease-in-out .4s;
+}
+
+.landing > div > div:hover{
+    transform: scale(1.05);
+}
+
+.body-section > div:nth-child(1){
+    background: var(--secondary);
+    padding: 10px 5px;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.menu{
+    border: 0 !important;
+    background: transparent;
+    display: none;
+}
+.menu > div{
+    background: black;
+    height: 5px;
+    width: 50px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+}
+
+/*--------------------------------------- Login --------------------------------------*/
+.login_container{
+    width: 50%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.login_or{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.login_or > div:nth-child(1), .login_or > div:nth-child(3){
+    width: 50%;
+    height: 1.6px;
+    border-radius: 10px;
+    background-color: rgb(199, 199, 199);
+}
+.login_links a{
+    text-decoration: none;
+}
