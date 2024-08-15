@@ -59,11 +59,13 @@ select:focus{
     transition: all ease-in-out .3s;
 }
 
+/*
 .submit-btn:hover{
     border: 1px solid var(--primary);
     background: white;
     color: var(--primary);
 }
+*/
 
 /*------------------------------------- Top Header ------------------------------------------*/
 body{

@@ -12,9 +12,13 @@ Route::get("/",function(){
 
 //Login Routes
 Route::get("/Login",[LoginController::class,'login_index'])->name("login");
+Route::post("/AuthenticateUser",[LoginController::class,'login_user'])->name("login.auth");
+Route::post("/Logout",[LoginController::class,'logout'])->name("logout");
 
 //Register Routes
 Route::get("/Register",[LoginController::class,'register_index'])->name("register");
+Route::post("/RegisterUser",[LoginController::class,'register_user'])->name("register.user");
+Route::get("/VerifyEmail/{id}",[LoginController::class,'verify_email'])->name("email.verify");
 
 //Forgot Password Routes
 Route::get("/ForgotPassword",[LoginController::class,'forgot_password_index'])->name("forgot.password");

@@ -30,7 +30,7 @@
     <div class="login_container">
         <div class="card border-0 rounded-0 shadow-sm">
             <div class="card-body">
-                <form action="" method="post">
+                <form action="" id="login_user" method="post">
                     @csrf
                     <div class="mb-2">
                         <label class="fw-bold h6">Email <i style="color:red;">*</i></label>
@@ -40,7 +40,20 @@
                         <label class="fw-bold h6">Password <i style="color:red;">*</i></label>
                         <input type="password" name="password" class="form-control rounded-2" placeholder="Enter Password" required>
                     </div>
-                    <button class="submit-btn mb-2">Login</button>
+                    <div class="mb-2 d-none" id="show_errors">
+                        <div id="error_message" class="alert alert-danger p-1">
+                        </div>
+                    </div><div class="mb-2 d-none" id="show_success">
+                        <div id="success_message" class="alert alert-success p-1">
+                        </div>
+                    </div>
+                    <button class="submit-btn mb-2 d-flex align-items-center" style="gap:5px;" type="submit">
+                        <div class="d-flex justify-content-center align-items-center d-none" id="spinner">
+                            <div class="spinner-border text-white spinner-border-sm" role="status">
+                            </div>
+                        </div>                        
+                        Login
+                    </button>
                     <div class="mb-2 login_or">
                         <div></div>
                         <div><p class="mb-0">or</p></div>
@@ -68,6 +81,41 @@
     <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('js/swiper-bundle.js') }}"></script>
     <script src="{{ asset('js/toasttui.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $("#login_user").on("submit",function(e){
+                e.preventDefault();
+                $("#spinner").removeClass("d-none");
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:"{{ route('login.auth') }}",
+                    data: new FormData(this),
+                    processData:false,
+                    contentType:false,
+                    cache:false,
+                    success:function(response){
+                        $("#spinner").addClass("d-none");
+                        var status = response.status;
+                        var text = response.response;
+                        var route = response.route;
+                        if(status == 401){
+                            $("input").addClass("is-invalid");
+                            $("#show_errors").removeClass("d-none");
+                            $("#error_message").text(text);
+                        }else if(status == 200){
+                            $("input").addClass("is-valid");
+                            $("#show_success").removeClass("d-none");
+                            $("#success_message").text(text);
+                            setTimeout(() => {
+                                location.replace(route);
+                            }, 1500);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     @stack("scripts")
 </body>
 </html>

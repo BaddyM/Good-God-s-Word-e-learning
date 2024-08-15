@@ -37,7 +37,7 @@
                 <a href="{{ route('courses') }}"><li><i class="bi bi-book-half"></i> Courses</li></a>
                 <a href="{{ route('password.index') }}"><li><i class="bi bi-key-fill"></i> Password</li></a>
                 <a href="{{ route('profile.index') }}"><li><i class="bi bi-person-fill"></i> My Profile</li></a>
-                <form action="" method="post">
+                <form action="{{ route("logout") }}" method="post">
                     @csrf
                     <button class="btn rounded-4 bg-gradient fw-bold btn-warning">Logout <i class="bi bi-lock"></i></button>
                 </form>

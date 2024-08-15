@@ -30,7 +30,7 @@
     <div class="login_container">
         <div class="card border-0 rounded-0 shadow-sm">
             <div class="card-body">
-                <form action="" method="post">
+                <form id="register_user" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-2">
@@ -44,7 +44,7 @@
                     </div>
                     <div class=" mb-2">
                         <label class="fw-bold h6">Email <i style="color:red;">*</i></label>
-                        <input type="email" class="form-control rounded-2" placeholder="Enter Email" required>
+                        <input type="email" name="email" class="form-control rounded-2" placeholder="Enter Email" required>
                     </div>
                     <div class=" mb-2">
                         <label class="fw-bold h6">Password <i style="color:red;">*</i></label>
@@ -54,7 +54,13 @@
                         <label class="fw-bold h6">Confirm Password <i style="color:red;">*</i></label>
                         <input type="password" name="confirm_password" class="form-control rounded-2" placeholder="Confirm Password" required>
                     </div>
-                    <button class="submit-btn mb-2">Register</button>
+                    <button class="submit-btn mb-2 d-flex align-items-center" style="gap:5px;" type="submit">
+                        <div class="d-flex justify-content-center align-items-center d-none" id="spinner">
+                            <div class="spinner-border text-white spinner-border-sm" role="status">
+                            </div>
+                        </div>
+                        Register
+                    </button>
                     <div class="mb-2 login_or">
                         <div></div>
                         <div><p class="mb-0">or</p></div>
@@ -67,7 +73,9 @@
             </div>
         </div>
     </div>
-    
+
+    @include("common.alert")
+
     <div class="bg-light p-3 text-center mt-4">
         <p class="mb-0"><i class="bi bi-c-circle"></i> Copyright {{ date("Y", strtotime(now())) }}</p>
     </div>
@@ -81,6 +89,34 @@
     <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('js/swiper-bundle.js') }}"></script>
     <script src="{{ asset('js/toasttui.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $("#register_user").on("submit",function(e){
+            e.preventDefault();
+                $("#spinner").removeClass("d-none");
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:"{{ route('register.user') }}",
+                    data: new FormData(this),
+                    processData:false,
+                    contentType:false,
+                    cache:false,
+                    success:function(response){
+                        $("#spinner").addClass("d-none");
+                        $("#alert_modal").modal("show");
+                        $("#alert_body").text(response);
+                        setTimeout(() => {
+                            $("#alert_modal").modal("hide");
+                        }, 2000);
+                    },
+                    error:function(){
+                        alert("Failed to Register, Try Again!");
+                    }
+                });
+            });
+        });
+    </script>
     @stack("scripts")
 </body>
 </html>
