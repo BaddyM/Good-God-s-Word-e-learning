@@ -5,19 +5,51 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $faker = Faker::create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        //Add levels
+        for($i=1; $i<=12; $i++){
+            $exists = DB::table("level")->where("level",$i)->exists();
+            if($exists != 1){
+                DB::table("level")->insert([
+                    'level' => $i,
+                    'price' => rand(20000, 150000),
+                    'created_at' => now()
+                ]);
+            }
+        }
+
+        //Add Tutors
+        $data =  [
+            "lname" => "Ssewankambo",
+            "fname" => "Martin",
+            "is_tutor" => 1,
+            "is_active" => 1,
+            "email_verified" => 1,
+            "email" => "arnoldhenry958@gmail.com",
+            "password" => Hash::make("123"),
+            "created_at" => now()
+        ];
+
+        DB::table("users")->insert($data);
+
+        $levels = DB::table("level")->get();
+
+        foreach($levels as $level){
+            DB::table("courses")->insert([
+                'title' => "Course $level->level",
+                'level' => $level->level,
+                'tutor' => 2,
+                'description' => "This is a Course About Level $level->level"
+            ]);
+        }
     }
 }

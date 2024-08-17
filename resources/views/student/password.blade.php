@@ -15,15 +15,15 @@
                         @csrf
                         <div class="mb-2">
                             <label class="form-contro h6 fw-bol">Old Password</label>
-                            <input type="password" class="form-control rounded-0" placeholder="Enter Old Password" required>
+                            <input type="password" name="old_password" class="form-control rounded-0" placeholder="Enter Old Password" required>
                         </div>
                         <div class="mb-2">
                             <label class="form-contro h6 fw-bol">New Password</label>
-                            <input type="password" class="form-control rounded-0" placeholder="Enter New Password" required>
+                            <input type="password" name="new_password" class="form-control rounded-0" placeholder="Enter New Password" required>
                         </div>
                         <div class="mb-2">
                             <label class="form-contro h6 fw-bol">Confirm New Password</label>
-                            <input type="password" class="form-control rounded-0" placeholder="Confirm New Password" required>
+                            <input type="password" name="confirm_new_password" class="form-control rounded-0" placeholder="Confirm New Password" required>
                         </div>
                         <button class="submit-btn" type="submit">Update</button>
                     </form>
@@ -35,6 +35,11 @@
 
 @push('scripts')
     <script>
-        
+        $(document).ready(function(){
+            $("#update_password_form").on("submit",function(e){
+                e.preventDefault();
+
+            });
+        });
     </script>
 @endpush

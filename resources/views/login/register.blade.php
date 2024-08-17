@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/swiper-bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+    <link rel="shortcut icon" href="{{ asset("images/logo.png") }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/toasttui.css') }}">
 </head>
 <body>
@@ -45,6 +46,14 @@
                     <div class=" mb-2">
                         <label class="fw-bold h6">Email <i style="color:red;">*</i></label>
                         <input type="email" name="email" class="form-control rounded-2" placeholder="Enter Email" required>
+                    </div>
+                    <div class=" mb-2">
+                        <label class="fw-bold h6">Gender <i style="color:red;">*</i></label>
+                        <select name="gender" class="form-select rounded-2" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
                     </div>
                     <div class=" mb-2">
                         <label class="fw-bold h6">Password <i style="color:red;">*</i></label>
@@ -106,6 +115,7 @@
                         $("#spinner").addClass("d-none");
                         $("#alert_modal").modal("show");
                         $("#alert_body").text(response);
+                        $("#register_user")[0].reset();
                         setTimeout(() => {
                             $("#alert_modal").modal("hide");
                         }, 2000);

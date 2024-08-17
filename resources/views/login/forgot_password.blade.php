@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/swiper-bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+    <link rel="shortcut icon" href="{{ asset("images/logo.png") }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/toasttui.css') }}">
 </head>
 <body>

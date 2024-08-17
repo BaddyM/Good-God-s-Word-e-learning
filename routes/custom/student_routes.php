@@ -9,6 +9,7 @@ Route::prefix("Student")->middleware("auth")->group(function () {
     Route::get('/Courses', [StudentController::class, 'courses'])->name('courses');
     Route::get('/Course/{id}', [StudentController::class, 'courses_enrolled'])->name('courses.enrolled');
     Route::get('/EnrollCourse/{id}', [StudentController::class, 'course_enroll'])->name('course.enroll');
+    Route::post('/EnrollCourseStart', [StudentController::class, 'enroll_for_course'])->name('course.enroll.start');
     Route::get('/UpdatePassword', [StudentController::class, 'password_index'])->name('password.index');
     Route::get('/Profile', [StudentController::class, 'profile_index'])->name('profile.index');
 });

@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/toasttui.css') }}">
+    <link rel="shortcut icon" href="{{ asset("images/logo.png") }}" type="image/x-icon">
 </head>
 <body>
     <div class="" style="background: rgb(16, 113, 248);">

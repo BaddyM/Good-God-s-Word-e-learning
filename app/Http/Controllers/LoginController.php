@@ -64,6 +64,7 @@ class LoginController extends Controller
         $full_name = "$lname $fname";
         $pass1 = strtolower($req->password);
         $pass2 = strtolower($req->confirm_password);
+        $gender = $req->gender;
         $exists = DB::table("users")->where("email",$email)->exists();
         if($pass1 == $pass2){
             if($exists != 1){
@@ -73,6 +74,7 @@ class LoginController extends Controller
                     'fname' => $fname,
                     'is_student' => 1,
                     'email' => $email,
+                    'gender' => $gender,
                     'password' => Hash::make($pass1),
                     'created_at' => now()
                 ]);
@@ -80,7 +82,7 @@ class LoginController extends Controller
                 $id = DB::table("users")->where("email",$email)->value("id");
                 $verify_link = route("email.verify", $id);
                 $message = "Thank you for to Registering Your email address";
-                Mail::to("arnoldhenry958@gmail.com")->send(new SendMail("Email Verification", $message, $verify_link));
+                Mail::to($email)->send(new SendMail("Email Verification", $message, $verify_link));
                 $response = "Registration Successfull, Verify Your Email.";
             }else{
                 $response = "Email Already Exists!";
@@ -98,7 +100,8 @@ class LoginController extends Controller
         $email = DB::table("users")->where("id",$id)->value("email");
         if($verified != 1){
             DB::table("users")->where("id",$id)->update([
-                'email_verified' => 1
+                'email_verified' => 1,
+                'is_active' => 1
             ]);
             return view("login.verify_email", compact("email"));
         }        

@@ -178,3 +178,10 @@ body{
 .login_links a{
     text-decoration: none;
 }
+
+/*--------------------------- Course Materials ----------------------------*/
+.course_material video{
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+}
