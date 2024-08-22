@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Exception;
 class StudentController extends Controller
 {
@@ -27,19 +28,50 @@ class StudentController extends Controller
         return view("student.courses", compact("courses", 'levels', 'enrollment'));
     }
 
-    public function courses_enrolled($id){
-        $courses = DB::table("courses")
-                    ->select("courses.id as course_id", "courses.title as course_title",
-                    "courses.level as course_level", "courses.tutor as course_tutor",
-                    "courses.description as course_description", "level.level as level",
-                    "level.price as level_price", "users.lname as lname",
-                    "users.fname as fname", "materials.material", "materials.type")
-                    ->leftJoin("level","level.id","=","courses.level")
-                    ->leftJoin("users","courses.tutor","=","users.id")
-                    ->leftJoin("materials","materials.course_id","=","courses.id")
-                    ->where("courses.id",$id)
-                    ->get();
+    public function courses_enrolled($pay_code){
+        $courses = DB::select("
+            SELECT
+                courses.id as course_id, 
+                courses.title as course_title,
+                courses.level as course_level, 
+                courses.tutor as course_tutor,
+                courses.description as course_description,
+                users.lname as lname,
+                users.fname as fname, 
+                materials.material, materials.type,
+                enrollment.pay_code as pay_code
+            FROM
+                courses
+            LEFT JOIN
+                users
+            ON
+                users.id = courses.tutor
+            LEFT JOIN
+                materials
+            ON
+                materials.course_id = courses.id
+            LEFT JOIN
+                enrollment
+            ON
+                enrollment.course_id = courses.id
+            WHERE
+                enrollment.pay_code = '".$pay_code."'
+        ");
         return view("student.enrolled", compact("courses"));
+    }
+
+    //Complete the Course
+    public function complete_course(Request $req){
+        $pay_code = $req->code;
+        try{
+            DB::table("enrollment")->where("pay_code",$pay_code)->update([
+                'status' => 'complete'
+            ]);
+            $response = "Course Completed Successfully";
+        }catch(Exception $e){
+            $response = "Course Incomplete!";
+        }
+        return response($response);
     }
 
     public function course_enroll($id){
@@ -78,11 +110,14 @@ class StudentController extends Controller
                                 'student_id' => $std_id,
                                 'course_level' => $level,
                                 'paid' => $amount,
-                                'payment_method' => $pay_method
+                                'payment_method' => $pay_method,
+                                'pay_code' => Str::random(30),
+                                'created_at' => now()
                             ]);
                             $response = "Course Enroll Succesfull, Wait For Confirmation";
                             $status = 200;
                         }catch(Exception $e){
+                            info($e);
                             $response = "Failed to Enroll For Course!";
                             $status = 500;
                         }
@@ -113,11 +148,8 @@ class StudentController extends Controller
         return view("student.password");
     }
 
-    public function change_password(Request $req){
-        
-    }
-
     public function profile_index(){
-        return view("student.profile");
+        $data = DB::table("users")->select("email","lname","fname")->where("id",Auth::user()->id)->first();
+        return view("student.profile",compact("data"));
     }
 }

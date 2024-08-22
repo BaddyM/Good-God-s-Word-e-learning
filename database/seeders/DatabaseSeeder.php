@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
+        /*
         //Add levels
         for($i=1; $i<=12; $i++){
             $exists = DB::table("level")->where("level",$i)->exists();
@@ -51,5 +53,13 @@ class DatabaseSeeder extends Seeder
                 'description' => "This is a Course About Level $level->level"
             ]);
         }
+        */
+
+        DB::table("enrollment")->where([
+            'course_id' => 1,
+            'student_id' => 7
+        ])->update([
+            'pay_code' => Str::random(30)
+        ]);
     }
 }

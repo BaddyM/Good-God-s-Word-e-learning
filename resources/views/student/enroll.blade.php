@@ -5,7 +5,24 @@
 @endsection
 
 @section('body')
-    <div class="container-fluid pt-3 landing">
+    <div class="container-fluid pt-3">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="alert alert-primary">
+                        <p class="mb-0">
+                            <strong>Note</strong>
+                            <ol>
+                                <li>Select the Payment Method.</li>
+                                <li>Make the payment via the mobile number.</li>
+                                <li>Wait for Confirmation of Payment.</li>
+                                <li>Start Learning.</li>
+                            </ol>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <form id="enroll_course" method="post">
             @csrf
             <input type="hidden" name="course_id" value="{{ $course->course_id }}">
@@ -61,12 +78,20 @@
                                         <input type="radio" class="form-check-radio" style="width:20px; height:20px;"
                                             name="payment_method" value="MTN">
                                     </div>
+                                    <div class="d-flex align-items-center" style="gap:5px;">
+                                        <label class="form-label h6 fw-bold mb-0">Number</label>
+                                        <input type="number" value="0781181958" class="form-control" readonly>
+                                    </div>
                                 </div>
                                 <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                     <div class="d-flex align-items-center my-3" style="gap:10px;">
                                         <label class="form-label h6 fw-bold">Airtel Money</label>
                                         <input type="radio" class="form-check-radio" style="width:20px; height:20px;"
                                             name="payment_method" value="Airtel">
+                                    </div>
+                                    <div class="d-flex align-items-center" style="gap:5px;">
+                                        <label class="form-label h6 fw-bold mb-0">Number</label>
+                                        <input type="number" value="0708648398" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">

@@ -20,15 +20,15 @@
                             <div class="col-md-9">
                                 <div class="mb-2">
                                     <label class="form-label h6 fw-bold">Full Name</label>
-                                    <input type="text" placeholder="Enter Full Name" class="form-control rounded-0" value="Arnold Henry" disabled>
+                                    <input type="text" placeholder="Enter Full Name" class="form-control rounded-0 text-uppercase fw-bold text-primary" value="{{ $data->lname." ".$data->fname }}" disabled>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label h6 fw-bold">Email</label>
-                                    <input type="email" placeholder="Enter Email" class="form-control rounded-0" value="arnoldhenry958@gmail.com" disabled>
+                                    <input type="email" placeholder="Enter Email" class="form-control rounded-0 fw-bold text-primary" value="{{ $data->email }}" disabled>
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-2 d-none">
                                     <label class="form-label h6 fw-bold">Payment Completed</label>
-                                    <input type="text" class="form-control rounded-0" value="45%" disabled>
+                                    <input type="text" class="form-control rounded-0 fw-bold text-primary" value="45%" disabled>
                                 </div>
                             </div>
                         </div>

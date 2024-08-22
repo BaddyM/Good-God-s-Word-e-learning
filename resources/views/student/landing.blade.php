@@ -5,6 +5,7 @@
 @endsection
 
 @section('body')
+    @if(Auth::user()->is_student == 1)
     <div class="container-fluid pt-3 landing">
         <div class="row justify-content-between">
             <div class="col-md-3 mb-3">
@@ -44,6 +45,22 @@
         <p class="my-2 fw-bold h6">My Planner</p>
         <div id="calendar" style="height: 300px"></div>
     </div>
+    @elseif(Auth::user()->is_tutor == 1)
+    <div class="container-fluid mt-3">
+        <div class="col-md-4">
+            <div class="alert alert-primary">
+                <strong><i>Welcome</i></strong> to the <u>Tutor Dashboard</u>. <br>
+                Please upload courses on this platform.
+            </div>
+        </div>
+    </div>
+    @elseif(Auth::user()->is_admin == 1)
+
+    @else
+    <div class="alert alert-danger">
+        <strong>Error</strong> Invalid Credentials
+    </div>
+    @endif
 @endsection
 
 @push('scripts')

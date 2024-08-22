@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class LoginController extends Controller
 {
@@ -90,7 +91,6 @@ class LoginController extends Controller
         }else{
             $response = "Passwords Don't Match!";
         }
-
         return response($response);
     }
 
@@ -112,5 +112,29 @@ class LoginController extends Controller
         $request->session()->invalidate();    
         $request->session()->regenerateToken();    
         return redirect()->route('login');
+    }
+
+    public function update_password(Request $req){
+        $old_pass = $req->old_password;
+        $new_pass = $req->new_password;
+        $confirm = $req->confirm_new_password;
+        $current_password = DB::table("users")->where("id",Auth::user()->id)->value("password");
+        if(Hash::check($old_pass,$current_password)){
+            if($new_pass == $confirm){
+                try{
+                    DB::table("users")->where("id",Auth::user()->id)->update([
+                        'password' => Hash::make($new_pass)
+                    ]);
+                    $response = "Password Update successfully";
+                }catch(Exception $e){
+                    $response = "Failed to Update Password!";
+                }
+            }else{
+                $response = "Password Mismatch!";
+            }
+        }else{
+            $response = "Old Password Incorrect!";
+        }
+        return response($response);
     }
 }

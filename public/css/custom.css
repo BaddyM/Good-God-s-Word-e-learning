@@ -32,7 +32,7 @@ select{
 input:focus,
 textarea:focus,
 select:focus{
-    border: 2px solid var(--primary) !important;
+    border: 2px solid rgb(173, 173, 173) !important;
 }
 
 .submit-btn{

@@ -4,6 +4,8 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 include("custom/student_routes.php");
+include("custom/tutor_routes.php");
+include("custom/system_routes.php");
 
 //Root Routes
 Route::get("/",function(){
@@ -14,6 +16,7 @@ Route::get("/",function(){
 Route::get("/Login",[LoginController::class,'login_index'])->name("login");
 Route::post("/AuthenticateUser",[LoginController::class,'login_user'])->name("login.auth");
 Route::post("/Logout",[LoginController::class,'logout'])->name("logout");
+Route::post("/PasswordUpdate",[LoginController::class,'update_password'])->name("update.password");
 
 //Register Routes
 Route::get("/Register",[LoginController::class,'register_index'])->name("register");
