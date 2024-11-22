@@ -9,6 +9,10 @@
         tr td {
             vertical-align: middle;
         }
+        iframe{
+            width:200px !important;
+            height:200px !important;
+        }
     </style>
     <div class="container-fluid mt-2">
         <p class="h4 fw-bold">My Courses</p>
@@ -48,7 +52,7 @@
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body overflow-scroll">
+                    <div class="modal-body overflow-scroll">                        
                         <form id="add_course_form" enctype="multipart/form-data" method="post">
                             @csrf
                             <div class="mb-2">
@@ -75,9 +79,13 @@
                                         class="text-danger">*</strong></label>
                                 <textarea name="description" placeholder="Description" style="height: 200px;" class="form-control" required></textarea>
                             </div>
-                            <div class="mb-2">
+                            <div class="mb-2 d-none">
                                 <label class="form-label fw-bold h6">File <strong class="text-danger">*</strong></label>
                                 <input type="file" accept=".mp4" name="filename" class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label fw-bold h6">Link <strong class="text-danger">*</strong></label>
+                                <textarea name="link" class="form-control" placeholder="Add Youtube Link here"></textarea>
                             </div>
                             <button class="submit-btn d-flex align-items-center" type="submit" id="upload_course_btn"
                                 style="gap:5px;">
@@ -90,6 +98,18 @@
                                 <span id="button-text">Add</span>
                             </button>
                         </form>
+                        <div class="d-none" id="upload_progress_container">
+                            <p class="mb-2 fw-bold h6">Upload Progress</p>
+                            <div class="progress mt-3">
+                                <div
+                                    id="upload_progress"
+                                    class="progress-bar bg-primary"
+                                    role="progressbar"
+                                    style="width: 0%;"
+                                >
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,21 +169,46 @@
                 $("#button-text").text("Please Wait...");
                 $.ajax({
                     type: "POST",
+                    xhr: function() {
+                        $("#upload_progress_container").removeClass("d-none");
+                        $("#add_course_form").addClass("d-none");
+                        $("#add_course_modal button").prop("disabled",true);
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = parseInt(percentComplete * 100);
+                                $("#upload_progress").css("width",`${percentComplete}%`);
+                                if (percentComplete === 100) {
+                                    
+                                }
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
                     url: "{{ route('tutor.course.add') }}",
                     data: new FormData(this),
                     contentType: false,
                     processData: false,
                     cache: false,
                     success: function(response) {
+                        $("#add_course_form")[0].reset();
                         $("#spinner").addClass("d-none");
                         $("#button-text").text("Add");
                         $("#add_course_modal").modal("hide");
                         $("#alert_modal").modal("show");
                         $("#course-table").DataTable().draw(false);
                         $("#alert_body").text(response);
+                        $("#add_course_form").removeClass("d-none");
+                        $("#add_course_modal button").prop("disabled",false);
+                        setTimeout(() => {
+                            $("#upload_progress_container").addClass("d-none");
+                            $("#upload_progress").css("width",`0%`);
+                        }, 2400);
                         setTimeout(() => {
                             $("#alert_modal").modal("hide");
-                        }, 2000);
+                        }, 2500);
                     },
                     error: function() {
                         $("#spinner").addClass("d-none");
@@ -173,6 +218,20 @@
                         setTimeout(() => {
                             $("#alert_modal").modal("hide");
                         }, 2000);
+
+                        $("#add_course_form")[0].reset();
+                        $("#spinner").addClass("d-none");
+                        $("#button-text").text("Add");
+                        $("#add_course_modal").modal("hide");
+                        $("#add_course_form").removeClass("d-none");
+                        $("#add_course_modal button").prop("disabled",false);
+                        setTimeout(() => {
+                            $("#upload_progress_container").addClass("d-none");
+                            $("#upload_progress").css("width",`0%`);
+                        }, 2400);
+                        setTimeout(() => {
+                            $("#alert_modal").modal("hide");
+                        }, 2500);
                     }
                 })
             });

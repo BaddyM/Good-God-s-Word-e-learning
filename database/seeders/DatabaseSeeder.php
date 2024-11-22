@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        /*
+        
         //Add levels
         for($i=1; $i<=12; $i++){
             $exists = DB::table("level")->where("level",$i)->exists();
@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $data =  [
             "lname" => "Ssewankambo",
             "fname" => "Martin",
+            "gender" => "male",
             "is_tutor" => 1,
             "is_active" => 1,
             "email_verified" => 1,
@@ -53,13 +54,14 @@ class DatabaseSeeder extends Seeder
                 'description' => "This is a Course About Level $level->level"
             ]);
         }
-        */
-
+        
+/*
         DB::table("enrollment")->where([
             'course_id' => 1,
             'student_id' => 7
         ])->update([
             'pay_code' => Str::random(30)
         ]);
+        */
     }
 }

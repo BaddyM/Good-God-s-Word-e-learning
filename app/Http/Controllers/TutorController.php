@@ -82,10 +82,11 @@ class TutorController extends Controller
             })
             ->addColumn("size", function ($data) {
                 //Convert to MBs
-                if ($data->material != null) {
+                if ($data->type == "video" || $data->type == "image") {
                     $mbs = ((filesize(public_path("materials/$data->id/$data->material"))) / (1024 * 1024));
                     return number_format($mbs, 2) . " MBs";
                 }
+                return "-";
             })
             ->addColumn("users",function($data){
                 return ucfirst($data->lname." ".$data->fname);
@@ -109,7 +110,7 @@ class TutorController extends Controller
                             <video style='width:200px; height:200px; object-fit:contain;' controls src='/materials/$data->id/$data->material'></video>
                         ";
                 } else {
-                    $material = "-";
+                    $material = $data->material;
                 }
                 return $material;
             })
@@ -126,6 +127,7 @@ class TutorController extends Controller
         $level = $req->level;
         $desc = strtolower($req->description);
         $tutor  = Auth::user()->id;
+        $link = $req->link;
         try {
             if ($req->filename != null) {
                 if ($req->filename->extension() == "mp4") {
@@ -135,11 +137,11 @@ class TutorController extends Controller
                 }
                 $filename = Str::random(16) . "." . $req->filename->extension();
             } else {
-                $filename = null;
-                $type = null;
+                $filename = $link;
+                $type = "link";
             }
 
-            //Save to DB
+            //Save to Courses DB
             DB::table("courses")->insert([
                 'title' => $courseName,
                 'level' => $level,
@@ -151,6 +153,7 @@ class TutorController extends Controller
             //Get the latest course id
             $course_id = DB::table("courses")->select("id")->latest("created_at")->value("id");
 
+            //Add to materials DB
             DB::table("materials")->insert([
                 'course_id' => $course_id,
                 'material' => $filename,

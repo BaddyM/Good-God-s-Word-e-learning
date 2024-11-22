@@ -44,9 +44,13 @@
                                 @if ($course->type == 'video')
                                     <video controls class="video-js w-100" id="my-player"
                                         src="{{ asset("materials/$course->course_id/$course->material") }}"></video>
-                                @else
+                                @elseif($course->type == 'image')
                                     <img class="img-fluid"
-                                        src="{{ asset("materials/$course->course_id/$course->materials") }}">
+                                        src="{{ asset("materials/$course->course_id/$course->material") }}">
+                                @else
+                                    @php
+                                        echo $course->material;
+                                    @endphp
                                 @endif
                             </div>
                         </div>

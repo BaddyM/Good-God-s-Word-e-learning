@@ -81,25 +81,27 @@
                                                                                 Awaiting Verification
                                                                             </div>
                                                                         @else
-                                                                            <div class="alert alert-danger fw-bold p-1 w-100">
-                                                                                <i class="bi bi-exclamation-triangle-fill"></i> Rejected
+                                                                            <div
+                                                                                class="alert alert-danger fw-bold p-1 w-100">
+                                                                                <i
+                                                                                    class="bi bi-exclamation-triangle-fill"></i>
+                                                                                Rejected
                                                                             </div>
                                                                         @endif
                                                                     @endif
                                                                 @else
                                                                     <div><a
-                                                                        href="{{ route('course.enroll', $course->course_id) }}">
-                                                                        <button type="button"
-                                                                            class="btn btn-success btn-sm rounded-5 px-3 shadow-sm">Enroll</button>
-                                                                    </a></div>
+                                                                            href="{{ route('course.enroll', $course->course_id) }}">
+                                                                            <button type="button"
+                                                                                class="btn btn-success btn-sm rounded-5 px-3 shadow-sm">Enroll</button>
+                                                                        </a></div>
                                                                 @endif
                                                             @endforeach
                                                         @else
-                                                        <div><a
-                                                            href="{{ route('course.enroll', $course->course_id) }}">
-                                                            <button type="button"
-                                                                class="btn btn-success btn-sm rounded-5 px-3 shadow-sm">Enroll</button>
-                                                        </a></div>
+                                                            <div><a href="{{ route('course.enroll', $course->course_id) }}">
+                                                                    <button type="button"
+                                                                        class="btn btn-success btn-sm rounded-5 px-3 shadow-sm">Enroll</button>
+                                                                </a></div>
                                                         @endif
                                                     </div>
                                                 </div>

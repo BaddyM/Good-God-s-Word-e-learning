@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="d-flex align-items-center" style="gap:5px;">
                                         <label class="form-label h6 fw-bold mb-0">Number</label>
-                                        <input type="number" value="0781181958" class="form-control" readonly>
+                                        <input type="number" value="0781831552" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="d-flex align-items-center" style="gap:5px;">
                                         <label class="form-label h6 fw-bold mb-0">Number</label>
-                                        <input type="number" value="0708648398" class="form-control" readonly>
+                                        <input type="number" value="0754654641" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
