@@ -32,11 +32,11 @@ class TutorController extends Controller
                     users.fname as fname
                 FROM
                     courses
-                LEFT JOIN
+                INNER JOIN
                     materials
                 ON
                     courses.id = materials.course_id
-                LEFT JOIN
+                INNER JOIN
                     users
                 ON
                     users.id = courses.tutor
@@ -57,11 +57,11 @@ class TutorController extends Controller
                     users.fname as fname
                 FROM
                     courses
-                LEFT JOIN
+                INNER JOIN
                     materials
                 ON
                     courses.id = materials.course_id
-                LEFT JOIN
+                INNER JOIN
                     users
                 ON
                     users.id = courses.tutor
@@ -88,8 +88,8 @@ class TutorController extends Controller
                 }
                 return "-";
             })
-            ->addColumn("users",function($data){
-                return ucfirst($data->lname." ".$data->fname);
+            ->addColumn("users", function ($data) {
+                return ucfirst($data->lname . " " . $data->fname);
             })
             ->addColumn("action", function ($data) {
                 $action = "";
@@ -185,12 +185,16 @@ class TutorController extends Controller
         try {
             //Delete file
             $material = DB::table("materials")->select("material")->where("course_id", $id)->value("material");
-            //Delete File
-            unlink(public_path("materials/$id/$material"));
-            //Delete Directory
-            rmdir(public_path("materials/$id"));
-            //Delete from Courses
-            DB::table("courses")->where("id", $id)->delete();
+            //Check if file exists
+            $file_exists = public_path("materials/$id/$material");
+            if ($file_exists == 1) {
+                //Delete File
+                unlink(public_path("materials/$id/$material"));
+                //Delete Directory
+                rmdir(public_path("materials/$id"));
+                //Delete from Courses
+                DB::table("courses")->where("id", $id)->delete();
+            }
             //Delete from Materials
             DB::table("materials")->where("course_id", $id)->delete();
             $response = "Delete Successfull";

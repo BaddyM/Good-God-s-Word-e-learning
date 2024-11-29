@@ -35,15 +35,16 @@
             <div class="card-body">
                 <form id="reset_password_form" method="post">
                     @csrf
+                    <input type="hidden" name="email" value="{{ $data->email }}">
                     <div class="mb-2">
-                        <label class="fw-bold h6">Email <i style="color:red;">*</i></label>
-                        <input type="email" name="email" class="form-control rounded-2" placeholder="Enter Email"
+                        <label class="fw-bold h6">New Password <i style="color:red;">*</i></label>
+                        <input type="password" name="password" class="form-control rounded-2" placeholder="Enter New Password"
                             required>
                     </div>
                     <button class="submit-btn mb-2" type="submit">
                         <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"
                             aria-hidden="true"></span>
-                        Reset</button>
+                        Confirm</button>
                     <div class="mb-2 login_or">
                         <div></div>
                         <div>
@@ -59,8 +60,6 @@
             </div>
         </div>
     </div>
-
-    @include("common.alert")
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
@@ -78,14 +77,15 @@
             $("button").prop("disabled", true);
             $.ajax({
                 type: "POST",
-                url: "{{ route('reset.password.link') }}",
+                url: "{{ route('user.reset.password') }}",
                 data: new FormData(this),
                 processData: false,
                 contentType: false,
                 cache: false,
                 success: function(response) {
+                    console.log(response);
                     $("#spinner").addClass("d-none");
-                    $("button").prop("disabled", false);                   
+                    $("button").prop("disabled", false);                    
                     if (response.status != 200) {
                         $("#alert_modal").modal("show");
                         $("#alert_body").text(response.message);
@@ -93,7 +93,7 @@
                             $("#alert_modal").modal("hide");
                         }, 2000);
                     }else{
-                        location.replace("/");
+                        location.replace(response.link);
                         $("#alert_modal").modal("show");
                         $("#alert_body").text(response.message);
                         setTimeout(() => {

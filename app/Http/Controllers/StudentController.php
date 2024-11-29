@@ -149,7 +149,7 @@ class StudentController extends Controller
     }
 
     public function profile_index(){
-        $data = DB::table("users")->select("email","lname","fname")->where("id",Auth::user()->id)->first();
+        $data = DB::table("users")->select("*")->where("id",Auth::user()->id)->first();
         return view("student.profile",compact("data"));
     }
 }

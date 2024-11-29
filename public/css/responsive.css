@@ -22,10 +22,9 @@
     .menu{
         display: block;
     }
-    .login_container{
+    
+    .login_container > div{
         width: 95%;
-        margin: auto;
-        margin-top: 30px;
     }
 
     .course_material video{

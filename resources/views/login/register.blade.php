@@ -23,16 +23,14 @@
     <link rel="shortcut icon" href="{{ asset("images/logo.png") }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/toasttui.css') }}">
 </head>
-<body>
-    <div class="" style="background: rgb(16, 113, 248);">
-        <p class="mb-0 text-center text-white fw-bold h4 py-2">Register Account <i class="fa fa-key"></i></p>
-    </div>     
+<body>  
 
     <div class="login_container">
-        <div class="card border-0 rounded-0 shadow-sm">
+        <div class="card border-0 rounded-0 shadow">
             <div class="card-body">
                 <form id="register_user" method="post">
                     @csrf
+                    <p class="text-center fw-bold h5 bg-primary py-3 text-white bg-gradient">Register User</p>
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <label class="fw-bold h6">Last Name <i style="color:red;">*</i></label>
@@ -84,10 +82,6 @@
     </div>
 
     @include("common.alert")
-
-    <div class="bg-light p-3 text-center mt-4">
-        <p class="mb-0"><i class="bi bi-c-circle"></i> Copyright {{ date("Y", strtotime(now())) }}</p>
-    </div>
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>

@@ -20,15 +20,30 @@
                             <div class="col-md-9">
                                 <div class="mb-2">
                                     <label class="form-label h6 fw-bold">Full Name</label>
-                                    <input type="text" placeholder="Enter Full Name" class="form-control rounded-0 text-uppercase fw-bold text-primary" value="{{ $data->lname." ".$data->fname }}" disabled>
+                                    <input type="text" placeholder="Enter Full Name"
+                                        class="form-control rounded-0 text-uppercase fw-bold text-primary"
+                                        value="{{ $data->lname . ' ' . $data->fname }}" disabled>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label h6 fw-bold">Email</label>
-                                    <input type="email" placeholder="Enter Email" class="form-control rounded-0 fw-bold text-primary" value="{{ $data->email }}" disabled>
+                                    <input type="email" placeholder="Enter Email"
+                                        class="form-control rounded-0 fw-bold text-primary" value="{{ $data->email }}"
+                                        disabled>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label h6 fw-bold">Account Type</label>
+                                    @if ($data->is_student == 1)
+                                        <span class="badge bg-warning text-dark">student</span>
+                                    @elseif($data->is_tutor == 1)
+                                        <span class="badge" style="background:purple;color:whitesmoke;">tutor</span>
+                                    @elseif($data->is_admin == 1)
+                                        <span class="badge bg-primary text-white">admin</span>
+                                    @endif
                                 </div>
                                 <div class="mb-2 d-none">
                                     <label class="form-label h6 fw-bold">Payment Completed</label>
-                                    <input type="text" class="form-control rounded-0 fw-bold text-primary" value="45%" disabled>
+                                    <input type="text" class="form-control rounded-0 fw-bold text-primary" value="45%"
+                                        disabled>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +56,5 @@
 @endsection
 
 @push('scripts')
-    <script>
-        
-    </script>
+    <script></script>
 @endpush

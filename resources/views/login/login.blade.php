@@ -23,16 +23,13 @@
     <link rel="stylesheet" href="{{ asset('css/toasttui.css') }}">
     <link rel="shortcut icon" href="{{ asset("images/logo.png") }}" type="image/x-icon">
 </head>
-<body>
-    <div class="" style="background: rgb(16, 113, 248);">
-        <p class="mb-0 text-center text-white fw-bold h4 py-2">Login <i class="fa fa-lock"></i></p>
-    </div>     
-
+<body> 
     <div class="login_container">
-        <div class="card border-0 rounded-0 shadow-sm">
+        <div class="card border-0 rounded-0 shadow">
             <div class="card-body">
                 <form action="" id="login_user" method="post">
                     @csrf
+                    <p class="text-center fw-bold h5 bg-primary py-3 text-white bg-gradient">Login <i class="fa fa-lock"></i></p>
                     <div class="mb-2">
                         <label class="fw-bold h6">Email <i style="color:red;">*</i></label>
                         <input type="email" name="email" class="form-control rounded-2" placeholder="Enter Email" required>
@@ -67,10 +64,6 @@
                 </form>
             </div>
         </div>
-    </div>
-    
-    <div class="bg-light p-3 text-center mt-4">
-        <p class="mb-0"><i class="bi bi-c-circle"></i> Copyright {{ date("Y", strtotime(now())) }}</p>
     </div>
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
