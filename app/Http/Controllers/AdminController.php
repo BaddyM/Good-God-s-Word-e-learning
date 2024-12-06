@@ -183,8 +183,9 @@ class AdminController extends Controller
             SELECT
                 users.lname as lname,
                 users.fname as fname,
-                courses.title as course,
-                courses.level as level,
+                users.email as email,
+                enrollment.course_level as level,
+                enrollment.status as level_status,
                 enrollment.pay_status as status,
                 enrollment.payment_method as method,
                 enrollment.created_at as created_at,
@@ -192,10 +193,6 @@ class AdminController extends Controller
                 enrollment.paid as paid
             FROM
                 enrollment
-            LEFT JOIN
-                courses
-            ON
-                enrollment.course_id = courses.id
             LEFT JOIN
                 users
             ON
@@ -207,13 +204,19 @@ class AdminController extends Controller
 
         return DataTables::of($data)
                 ->addColumn("name",function($data){
-                    return ucfirst($data->lname)." ".ucfirst($data->fname);
-                })
-                ->addColumn("course",function($data){
-                    return ucfirst($data->course);
+                    $name = "<div style='cursor:pointer;' title='".$data->email."'>".ucfirst($data->lname)." ".ucfirst($data->fname)."</div>";
+                    return $name;
                 })
                 ->addColumn("paid",function($data){
                     return number_format($data->paid,0);
+                })
+                ->addColumn("level_status",function($data){
+                    if($data->level_status == "complete"){
+                        $status = "<div class='badge bg-success'>".$data->level_status."</div>";
+                    }else{
+                        $status = "<div class='badge bg-danger'>".$data->level_status."</div>";
+                    }
+                    return $status;
                 })
                 ->addColumn("method",function($data){
                     return strtoupper($data->method);
@@ -255,7 +258,7 @@ class AdminController extends Controller
 
                     return "<div class='d-flex justify-content-center' style='gap:5px;'>$action</div>";
                 })
-                ->rawColumns(['action','status'])
+                ->rawColumns(['action','status','level_status','name'])
                 ->addIndexColumn()
                 ->make(true);
     }
@@ -275,6 +278,28 @@ class AdminController extends Controller
             'pay_status' => 'cancelled'
         ]);
         $response = "Cancelled";
+        return response($response);
+    }
+
+    public function levels_index(){
+        $levels = DB::table("level")->get();
+        return view("system.levels",compact("levels"));
+    }
+
+    public function save_levels(Request $req){
+        $price = $req->price;
+        for($i=1; $i<=12; $i++){
+            if($price[$i-1] != null){
+                try{
+                    DB::table("level")->where("id",$i)->update([
+                        "price" => intval($price[$i-1])
+                    ]);
+                    $response = "Level prices saved";
+                }catch(Exception $e){
+                    $response = "Something went wrong, try again!";
+                }
+            }
+        }
         return response($response);
     }
 }

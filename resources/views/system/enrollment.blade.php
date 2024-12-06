@@ -19,8 +19,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Student Name</th>
-                            <th scope="col">Course</th>
                             <th scope="col">Level</th>
+                            <th scope="col">Level Status</th>
                             <th scope="col">Pay Status</th>
                             <th scope="col">Amount</th>
                             <th scope="col">Payment Method</th>
@@ -55,10 +55,10 @@
                         data: "name"
                     },
                     {
-                        data: "course"
+                        data: "level"
                     },
                     {
-                        data: "level"
+                        data: "level_status"
                     },
                     {
                         data: "status"
@@ -77,7 +77,7 @@
                     }
                 ],
                 columnDefs: [{
-                    targets: [0, 3, 4, 5, 6, 8],
+                    targets: [0,2,3, 4, 5, 6, 8],
                     className: "dt-center"
                 }]
             });

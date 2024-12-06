@@ -9,9 +9,10 @@
         tr td {
             vertical-align: middle;
         }
-        iframe{
-            width:200px !important;
-            height:200px !important;
+
+        iframe {
+            width: 200px !important;
+            height: 200px !important;
         }
     </style>
     <div class="container-fluid mt-2">
@@ -28,8 +29,8 @@
                             <th scope="col">#</th>
                             <th scope="col">Course Name</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Material</th>
-                            <th scope="col">Size</th>
+                            <th scope="col">Video</th>
+                            <th scope="col">Length</th>
                             <th scope="col">Uploaded By</th>
                             <th scope="col">Created On</th>
                             <th scope="col">Action</th>
@@ -52,7 +53,7 @@
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body overflow-scroll">                        
+                    <div class="modal-body overflow-scroll">
                         <form id="add_course_form" enctype="multipart/form-data" method="post">
                             @csrf
                             <div class="mb-2">
@@ -79,12 +80,33 @@
                                         class="text-danger">*</strong></label>
                                 <textarea name="description" placeholder="Description" style="height: 200px;" class="form-control" required></textarea>
                             </div>
-                            <div class="mb-2 d-none">
-                                <label class="form-label fw-bold h6">File <strong class="text-danger">*</strong></label>
-                                <input type="file" accept=".mp4" name="filename" class="form-control">
+                            <div>
+                                <label class="form-label fw-bold h6">Video Period<strong
+                                        class="text-danger">*</strong></label>
+                                <div class="row justify-content-between">
+                                    <div class="col-md-6 mb-2">
+                                        <label class="fw-bold h6">Hours</label>
+                                        <input type="number" class="form-control check_period_val" name="hours"
+                                            maxlength="2" placeholder="Hours" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="fw-bold h6">Minutes</label>
+                                        <input type="number" class="form-control check_period_val" name="minutes"
+                                            maxlength="2" placeholder="Minutes" required>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label fw-bold h6">Link <strong class="text-danger">*</strong></label>
+                                <label class="form-label fw-bold h6">Youtube Link <strong
+                                        class="text-danger">*</strong></label>
+                                <div class="mb-2">
+                                    <div class="alert alert-danger shadow-sm">
+                                        <Strong><i class="fa fa-exclamation-triangle"></i> Note:</Strong> <br>
+                                        The youtube link should be like the example below, other than that, the system
+                                        will not accept the link.
+                                    </div>
+                                    <p class="mb-1 text-muted" id="link_example">Example: <strong>https://youtu.be/P2EbhIdAo5Q</strong></p>
+                                </div>
                                 <textarea name="link" class="form-control" placeholder="Add Youtube Link here"></textarea>
                             </div>
                             <button class="submit-btn d-flex align-items-center" type="submit" id="upload_course_btn"
@@ -101,12 +123,8 @@
                         <div class="d-none" id="upload_progress_container">
                             <p class="mb-2 fw-bold h6">Upload Progress</p>
                             <div class="progress mt-3">
-                                <div
-                                    id="upload_progress"
-                                    class="progress-bar bg-primary"
-                                    role="progressbar"
-                                    style="width: 0%;"
-                                >
+                                <div id="upload_progress" class="progress-bar bg-primary" role="progressbar"
+                                    style="width: 0%;">
                                 </div>
                             </div>
                         </div>
@@ -122,6 +140,20 @@
         $(document).ready(function() {
             $("#add_course_btn").on("click", function() {
                 $("#add_course_modal").modal("show");
+            });
+
+            $(".check_period_val").on("keyup", function(e) {
+                var period_length = $(this).val().length;
+                var period_val = $(this).val();
+                if (period_length > 2 || period_val > 60) {
+                    alert("Invalid Time!");
+                    $(this).val(null);
+                }
+            });
+
+            //Disable mouse copy and paste
+            $('#link_example').on('mousedown', function(e) {
+                return false;
             });
 
             $("#course-table").DataTable({
@@ -145,7 +177,7 @@
                         data: "material"
                     },
                     {
-                        data: "size"
+                        data: "length"
                     },
                     {
                         data: "users"
@@ -158,7 +190,7 @@
                     }
                 ],
                 columnDefs: [{
-                    targets: [0, 4, 6],
+                    targets: [0,7],
                     className: "dt-center"
                 }]
             });
@@ -172,15 +204,16 @@
                     xhr: function() {
                         $("#upload_progress_container").removeClass("d-none");
                         $("#add_course_form").addClass("d-none");
-                        $("#add_course_modal button").prop("disabled",true);
+                        $("#add_course_modal button").prop("disabled", true);
                         var xhr = new window.XMLHttpRequest();
                         xhr.upload.addEventListener("progress", function(evt) {
                             if (evt.lengthComputable) {
                                 var percentComplete = evt.loaded / evt.total;
                                 percentComplete = parseInt(percentComplete * 100);
-                                $("#upload_progress").css("width",`${percentComplete}%`);
+                                $("#upload_progress").css("width",
+                                    `${percentComplete}%`);
                                 if (percentComplete === 100) {
-                                    
+
                                 }
                             }
                         }, false);
@@ -201,10 +234,10 @@
                         $("#course-table").DataTable().draw(false);
                         $("#alert_body").text(response);
                         $("#add_course_form").removeClass("d-none");
-                        $("#add_course_modal button").prop("disabled",false);
+                        $("#add_course_modal button").prop("disabled", false);
                         setTimeout(() => {
                             $("#upload_progress_container").addClass("d-none");
-                            $("#upload_progress").css("width",`0%`);
+                            $("#upload_progress").css("width", `0%`);
                         }, 2400);
                         setTimeout(() => {
                             $("#alert_modal").modal("hide");
@@ -224,10 +257,10 @@
                         $("#button-text").text("Add");
                         $("#add_course_modal").modal("hide");
                         $("#add_course_form").removeClass("d-none");
-                        $("#add_course_modal button").prop("disabled",false);
+                        $("#add_course_modal button").prop("disabled", false);
                         setTimeout(() => {
                             $("#upload_progress_container").addClass("d-none");
-                            $("#upload_progress").css("width",`0%`);
+                            $("#upload_progress").css("width", `0%`);
                         }, 2400);
                         setTimeout(() => {
                             $("#alert_modal").modal("hide");

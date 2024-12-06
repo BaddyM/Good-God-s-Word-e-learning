@@ -28,6 +28,7 @@ class TutorController extends Controller
                     materials.material as material,
                     materials.created_at as created_at,
                     materials.type as type,
+                    materials.length as length,
                     users.lname as lname,
                     users.fname as fname
                 FROM
@@ -53,6 +54,7 @@ class TutorController extends Controller
                     materials.material as material,
                     materials.created_at as created_at,
                     materials.type as type,
+                    materials.length as length,
                     users.lname as lname,
                     users.fname as fname
                 FROM
@@ -80,13 +82,11 @@ class TutorController extends Controller
             ->editColumn("description", function ($data) {
                 return ucfirst($data->description);
             })
-            ->addColumn("size", function ($data) {
-                //Convert to MBs
-                if ($data->type == "video" || $data->type == "image") {
-                    $mbs = ((filesize(public_path("materials/$data->id/$data->material"))) / (1024 * 1024));
-                    return number_format($mbs, 2) . " MBs";
-                }
-                return "-";
+            ->addColumn("length", function ($data) {
+                $hours = explode(":",$data->length)[0];
+                $mins = explode(":",$data->length)[1];
+                $length = $hours." hour(s) : ".$mins." minutes";
+                return $length;
             })
             ->addColumn("users", function ($data) {
                 return ucfirst($data->lname . " " . $data->fname);
@@ -110,7 +110,12 @@ class TutorController extends Controller
                             <video style='width:200px; height:200px; object-fit:contain;' controls src='/materials/$data->id/$data->material'></video>
                         ";
                 } else {
-                    $material = $data->material;
+                    $material = '<div style="width:200px; height:200px;">
+                                    <iframe style="width:200px; height:200px;" class="img-fluid"
+                                    src="https://www.youtube.com/embed/'.$data->material.'" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                </div>';
                 }
                 return $material;
             })
@@ -127,54 +132,51 @@ class TutorController extends Controller
         $level = $req->level;
         $desc = strtolower($req->description);
         $tutor  = Auth::user()->id;
-        $link = $req->link;
+        $check_link = count(explode("/",$req->link));
+        $period = (($req->hours == null?0:intval($req->hours)).":".($req->minutes == null?0:intval($req->minutes)));
+        
         try {
-            if ($req->filename != null) {
-                if ($req->filename->extension() == "mp4") {
-                    $type = "video";
+            if($check_link == 4 && strlen(explode("/",$req->link)[3]) == 11){
+                $link = explode("/",$req->link)[3];
+                if ($req->filename != null) {
+                    if ($req->filename->extension() == "mp4") {
+                        $type = "video";
+                    } else {
+                        $type = "image";
+                    }
+                    $filename = Str::random(16) . "." . $req->filename->extension();
                 } else {
-                    $type = "image";
+                    $filename = $link;
+                    $type = "link";
                 }
-                $filename = Str::random(16) . "." . $req->filename->extension();
-            } else {
-                $filename = $link;
-                $type = "link";
+    
+                //Save to Courses DB
+                DB::table("courses")->insert([
+                    'title' => $courseName,
+                    'level' => $level,
+                    'tutor' => $tutor,
+                    'description' => $desc,
+                    'created_at' => now()
+                ]);
+    
+                //Get the latest course id
+                $course_id = DB::table("courses")->select("id")->latest("created_at")->value("id");
+    
+                //Add to materials DB
+                DB::table("materials")->insert([
+                    'course_id' => $course_id,
+                    'material' => $filename,
+                    'type' => $type,
+                    "length" => $period,
+                    'created_at' => now()
+                ]);
+                $response = "Course Uploaded Successfully";
+            }else{
+                $response = "Invalid youtube link used";
             }
-
-            //Save to Courses DB
-            DB::table("courses")->insert([
-                'title' => $courseName,
-                'level' => $level,
-                'tutor' => $tutor,
-                'description' => $desc,
-                'created_at' => now()
-            ]);
-
-            //Get the latest course id
-            $course_id = DB::table("courses")->select("id")->latest("created_at")->value("id");
-
-            //Add to materials DB
-            DB::table("materials")->insert([
-                'course_id' => $course_id,
-                'material' => $filename,
-                'type' => $type,
-                'created_at' => now()
-            ]);
-
-            //Add to the folder            
-            if ($req->filename != null) {
-                //Check if the folder exists
-                $exists = file_exists(public_path("materials/$course_id"));
-                if ($exists != 1) {
-                    mkdir(public_path("materials/$course_id"), 0777, true);
-                    $req->filename->move(public_path("materials/$course_id"), $filename);
-                } else {
-                    $req->filename->move(public_path("materials/$course_id"), $filename);
-                }
-            }
-            $response = "Course Uploaded Successfully";
         } catch (Exception $e) {
-            $response = "Failed, Video too Large or Try Again!";
+            info($e);
+            $response = "Something went wrong, Try again!";
         }
         return response($response);
     }

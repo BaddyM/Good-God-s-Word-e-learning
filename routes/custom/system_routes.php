@@ -17,4 +17,8 @@ Route::prefix("Admin")->middleware(['auth','admin'])->group(function(){
     Route::post("/DeactivateUser",[AdminController::class,'deactivate_user'])->name("accounts.deactivate");
     Route::post("/DeleteUser",[AdminController::class,'delete_user'])->name("accounts.delete");
     Route::post("/AddUser",[AdminController::class,'add_account'])->name("accounts.add");
+
+    //Levels
+    Route::get("/Levels",[AdminController::class,'levels_index'])->name("levels.index");
+    Route::post("/SaveLevels",[AdminController::class,'save_levels'])->name("levels.save");
 });

@@ -27,6 +27,9 @@
     <div class="login_container">
         <div class="card border-0 rounded-0 shadow">
             <div class="card-body">
+                <div class="mb-3">
+                    <a href="{{ url("/") }}" title="To Website" class="btn border-0 rounded-5 p-0"><i class="fa fa-arrow-left h4"></i></a>
+                </div>
                 <form action="" id="login_user" method="post">
                     @csrf
                     <p class="text-center fw-bold h5 bg-primary py-3 text-white bg-gradient">Login <i class="fa fa-lock"></i></p>

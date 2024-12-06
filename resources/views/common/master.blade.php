@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/aos.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
@@ -57,7 +58,7 @@
                 </ul>
             </div>
             <div class="body-section">
-                <div class="bg-gradient">
+                <div class="bg-gradient shadow">
                     <div></div>
                     <p class="mb-0 text-center">
                         {{ $brand_name }}
@@ -154,6 +155,9 @@
                 <a href="{{ route('tutor.course') }}">
                     <li><i class="bi bi-book-half"></i> Courses</li>
                 </a>
+                <a href="{{ route('levels.index') }}">
+                    <li><i class="fa fa-signal"></i> Levels</li>
+                </a>
                 <a href="{{ route('accounts.list') }}">
                     <li><i class="bi bi-people-fill"></i> Accounts</li>
                 </a>
@@ -215,7 +219,6 @@
     <script src="{{ asset('js/flatpickr.js') }}"></script>
     <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('js/toasttui.js') }}"></script>
-    <script src="{{ asset('js/video-js.js') }}"></script>
     <script>
         $(document).ready(function() {
             $(".menu").on("click", function(e) {
