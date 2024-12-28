@@ -82,6 +82,11 @@
                 }]
             });
 
+            //Autoupdate
+            $(window).on("focus",function(){
+                $("#enrollment-table").DataTable().draw();
+            });
+
             $(document).on("click", ".accept_enrollment", function(e) {
                 e.preventDefault();
                 var id = $(this).data("id");
@@ -120,6 +125,36 @@
                     $.ajax({
                         type: "POST",
                         url: "{{ route('enrollment.cancel') }}",
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            $("#alert_modal").modal("show");
+                            $("#enrollment-table").DataTable().draw(false);
+                            $("#alert_body").text(response);
+                            setTimeout(() => {
+                                $("#alert_modal").modal("hide");
+                            }, 2000);
+                        },
+                        error: function() {
+                            $("#alert_modal").modal("show");
+                            $("#alert_body").text("Failed, Try Again!");
+                            setTimeout(() => {
+                                $("#alert_modal").modal("hide");
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+
+            $(document).on("click", ".delete_enrollment", function(e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                const confirm_activate = confirm("Are you sure?");
+                if (confirm_activate == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('enrollment.delete') }}",
                         data: {
                             id: id
                         },

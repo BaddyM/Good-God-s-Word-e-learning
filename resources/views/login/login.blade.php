@@ -28,7 +28,9 @@
         <div class="card border-0 rounded-0 shadow">
             <div class="card-body">
                 <div class="mb-3">
-                    <a href="{{ url("/") }}" title="To Website" class="btn border-0 rounded-5 p-0"><i class="fa fa-arrow-left h4"></i></a>
+                    <a href="{{ url("/") }}" title="To Website" class="btn border-0 rounded-5 p-0 d-flex" style="gap:5px;">
+                        <i class="fa fa-arrow-left h4"></i><p class="mb-0 fw-bold">Back</p>
+                    </a>
                 </div>
                 <form action="" id="login_user" method="post">
                     @csrf

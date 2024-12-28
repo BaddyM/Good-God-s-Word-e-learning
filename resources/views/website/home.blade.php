@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div class="btn-box">
-                <a href="#">
+                <a href="{{ route("courses.website.index") }}">
                     Read More
                 </a>
             </div>
@@ -129,52 +129,29 @@
                     it is and always up and running.
                 </p>
             </div>
+            @php
+                $team_img = ["DSC_6382.JPG","1.JPG","2.JPG","DSC_6338.JPG","DSC_6350.JPG","DSC_6362.JPG","DSC_6367.JPG","DSC_6372.JPG","DSC_8057.JPG","DSC_8088.JPG"];
+                $team_titles = ["Executive Director","Heads of Projects Department","Head of Missions and Outreach Department","Head of Education and Training Department","Head of Music Department","Head of Pastoral Department","A few of the Ministers' team","Missions and Outreach Team","Ministry choir members","Head of Family and Marriage affairs"];
+                $team_name = ["AP. Nsubuga Thomas L.","Ddamulira Denis","Tamale Ivan","Kibirige Vicent", "Vicent Ssengendo","Paul Gizamba","","","","Jemimah Nakazzi"];
+            @endphp
             <div class="row">
+                @for ($i=0; $i<count($team_img); $i++)
                 <div class="col-md-4 col-sm-6 mx-auto">
                     <div class="box">
                         <div class="img-box">
-                            <img src="{{ asset('images/IMG-20241130-WA0019.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('images/staff/'.$team_img[$i].'') }}" alt="">
                         </div>
                         <div class="detail-box">
                             <h5>
-                                AP. Nsubuga Thomas L.
+                                {{ $team_name[$i] }}
                             </h5>
                             <h6 class="">
-                                Executive Director
+                                {{ $team_titles[$i] }}
                             </h6>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 mx-auto">
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="{{ asset('images/IMG-20241130-WA0018.jpg') }}" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h5>
-                                Pr. Gizamba Paul
-                            </h5>
-                            <h6 class="">
-                                Assistant Executive Director
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mx-auto d-none">
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="{{ asset('images/t3.jpg') }}" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h5>
-                                Nathan Mcpherson
-                            </h5>
-                            <h6 class="">
-                                supervisor
-                            </h6>
-                        </div>
-                    </div>
-                </div>
+                @endfor
             </div>
         </div>
     </section>
@@ -184,11 +161,10 @@
     <!-- contact section -->
     <section class="contact_section mb-5">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-6 px-0">
                     <div class="img-box ">
-                        <img src="{{ asset('images/IMG-20241130-WA0004.jpg') }}" class="box_img img-fluid" alt="about img">
+                        <img src="{{ asset('images/courses/videography/4.jpg') }}" class="box_img img-fluid" alt="about img">
                     </div>
                 </div>
                 <div class="col-md-5 mx-auto">

@@ -302,4 +302,15 @@ class AdminController extends Controller
         }
         return response($response);
     }
+
+    public function delete_enrollment(Request $req){
+        $id = $req->id;
+        try{
+            DB::table("enrollment")->where("id",$id)->delete();
+            $response = "Delete successfull";
+        }catch(Exception $e){
+            $response = "Sorry, something went wrong!";
+        }
+        return response($response);
+    }
 }

@@ -41,9 +41,9 @@ class StudentController extends Controller
     {
         $level_exists = DB::table("level")->where("level", $level)->exists();
         if ($level_exists == 1) {
-            $status = DB::table("enrollment")->where(["course_level" => $level])->value("status");
+            $status = DB::table("enrollment")->where(["course_level" => $level, "student_id"=>Auth::user()->id])->value("status");
             $price = DB::table("level")->where("level", $level)->value("price");
-            $pay_status = DB::table("enrollment")->where(["course_level" => $level])->value("pay_status");
+            $pay_status = DB::table("enrollment")->where(["course_level" => $level, "student_id"=>Auth::user()->id])->value("pay_status");
             $course = DB::select("
                     SELECT
                         courses.id as course_id, 
@@ -73,6 +73,8 @@ class StudentController extends Controller
                         enrollment.course_level = courses.level
                     WHERE
                         enrollment.course_level = '" . $level . "'
+                    AND 
+                        enrollment.student_id = '".Auth::user()->id."'
                 ");
             $view = view("student.course_materials", compact("level", "status", "price", "pay_status", "course"));
         } else {

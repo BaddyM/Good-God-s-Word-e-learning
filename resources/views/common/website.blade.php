@@ -39,7 +39,7 @@
 
     <div class="hero_area">
         <div class="hero_bg_box">
-            <img src="images/IMG-20241130-WA0006.jpg" alt="">
+            <img src="images/staff/DSC_6367.JPG" alt="">
         </div>
         <!-- header section strats -->
         <header class="header_section">

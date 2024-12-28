@@ -9,6 +9,7 @@ Route::prefix("Admin")->middleware(['auth','admin'])->group(function(){
     Route::post("/EnrollmentData",[AdminController::class,'enrollment_data'])->name("enrollment.data");
     Route::post("/AcceptEnrollment",[AdminController::class,'accept_enrollment'])->name("enrollment.accept");
     Route::post("/CancelEnrollment",[AdminController::class,'cancel_enrollment'])->name("enrollment.cancel");
+    Route::post("/DeleteEnrollment",[AdminController::class,'delete_enrollment'])->name("enrollment.delete");
 
     //Accounts
     Route::get("/Accounts",[AdminController::class,'accounts_list'])->name("accounts.list");

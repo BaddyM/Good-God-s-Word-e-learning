@@ -32,7 +32,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'Admin/DeleteUser',
             'Admin/EnrollmentData',
             'Admin/AcceptEnrollment',
-            'Admin/CancelEnrollment'
+            'Admin/CancelEnrollment',
+            'Admin/DeleteEnrollment',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
