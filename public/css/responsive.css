@@ -15,6 +15,10 @@
         display: block;
     }
 
+    .email_container{
+        margin-right: 30px;
+    }
+
     .body-section{
         width: 100%;
     }

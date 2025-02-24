@@ -7,12 +7,124 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Exception;
+use Yajra\DataTables\DataTables;
 
 class StudentController extends Controller
 {
     public function home()
     {
         return view("student.landing");
+    }
+
+    public function messages_index(){
+        $from = Auth::user()->email;
+        if(Auth::user()->is_student == 1){
+            $to = DB::table("users")->select("email","lname","fname")->where("is_tutor",1)->get();
+        }elseif(Auth::user()->is_tutor == 1){
+            $to = DB::table("users")->select("email","lname","fname")->where("is_student",1)->get();
+        }elseif(Auth::user()->is_admin == 1){
+            $to = DB::table("users")->select("email","lname","fname")->where("email","!=",$from)->get();
+        }else{
+            $to = [];
+        }
+        return view("common.messages",compact("from","to"));
+    }
+
+    public function email_counter(){
+        $email = Auth::user()->email;
+        $email_counter = DB::table("messages")->where(["from" => $email, "read" => 0])->count();
+        return response()->json([
+            "email_counter" => $email_counter
+        ]);
+    }
+
+    public function send_message(Request $req){
+        $from = $req->from;
+        $to = $req->to;
+        $message = $req->message;
+
+        try{
+            if($message != null && $from != null && $to != null){
+                DB::table("messages")->insert([
+                    "from" => $from,
+                    "to" => $to,
+                    "message" => $message,
+                    "created_at" => now()
+                ]);
+                $response = "Message sent successfully";
+            }else{
+                $response = "Sorry, failed to send message!";
+            }
+        }catch(Exception $e){
+            $response = "Sorry, something went wrong!";
+        }
+        return response()->json([
+            "response" => $response
+        ]);
+    }
+
+    public function messages_table(){
+        $email = Auth::user()->email;
+        $data = DB::select("
+            SELECT 
+                *
+            FROM
+                messages
+            WHERE
+                messages.from = '".$email."'
+            OR
+                messages.to = '".$email."'
+            ORDER BY
+                id
+            DESC
+        ");
+        return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn("action",function($data){
+                    $action = "";
+
+                    if($data->read == 0 && $data->from != Auth::user()->email){
+                        $action .= "<div><button data-id='".$data->id."' title='Read' class='btn btn-outline-success rounded-5 read_message'><i class='fa fa-check'></i></button></div>";
+                    }
+                    $action .= "<div><button data-id='".$data->id."' title='Delete' class='btn btn-danger rounded-5 delete_message'><i class='fa fa-x'></i></button></div>";
+                    return "<div class='d-flex justify-content-center' style='gap:10px;'>".$action."</div>";
+                })
+                ->editColumn("created_at",function($data){
+                    $date = date("D, d M, Y H:i",strtotime($data->created_at));
+                    return $date;
+                })
+                ->rawColumns(["action"])
+                ->make(true);
+    }
+
+    public function read_message(Request $req){
+        $id = $req->id;
+        if($id != null){
+            DB::table("messages")->where("id",$id)->update([
+                "read" => 1
+            ]);
+            $response = "Message read!";
+        }else{
+            $response = "Sorry, something went wrong!";
+        }
+        
+        return response()->json([
+            "response" => $response
+        ]);
+    }
+
+    public function delete_message(Request $req){
+        $id = $req->id;
+        if($id != null){
+            DB::table("messages")->where("id",$id)->delete();
+            $response = "Message deleted!";
+        }else{
+            $response = "Sorry, something went wrong!";
+        }
+        
+        return response()->json([
+            "response" => $response
+        ]);
     }
 
     public function courses()

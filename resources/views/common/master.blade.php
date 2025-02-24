@@ -63,6 +63,10 @@
                     <p class="mb-0 text-center">
                         {{ $brand_name }}
                     </p>
+                    <div class="email_container">
+                        <div><a href="{{ route('messages.index') }}" class="nav-link"><i class="bi bi-envelope"></i></a></div>
+                        <div class="rounded-5 justify-content-center align-items-center" id="email_counter"></div>
+                    </div>
                     <div class="d-flex align-items-center">
                         <button class="menu">
                             <div></div>
@@ -119,6 +123,10 @@
                     <p class="mb-0 text-center">
                         {{ $brand_name }}
                     </p>
+                    <div class="email_container">
+                        <div><a href="{{ route('messages.index') }}" class="nav-link"><i class="bi bi-envelope"></i></a></div>
+                        <div class="rounded-5 justify-content-center align-items-center" id="email_counter"></div>
+                    </div>
                     <div class="d-flex align-items-center">
                         <button class="menu">
                             <div></div>
@@ -183,6 +191,10 @@
                 <p class="mb-0 text-center">
                     {{ $brand_name }}
                 </p>
+                <div class="email_container">
+                    <div><a href="{{ route('messages.index') }}" class="nav-link"><i class="bi bi-envelope"></i></a></div>
+                    <div class="rounded-5 justify-content-center align-items-center"><p class="m-0" id="email_counter"></p></div>
+                </div>
                 <div class="d-flex align-items-center">
                     <button class="menu">
                         <div></div>
@@ -230,6 +242,10 @@
                 e.preventDefault();
                 $(".nav-bar").removeClass("is_open");
             });
+
+            fetch('{{ route("email.counter") }}')
+            .then((res) => res.json())
+            .then((data) => $("#email_counter").text(data.email_counter))
         })
     </script>
     @stack('scripts')

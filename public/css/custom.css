@@ -13,12 +13,29 @@
 
 @font-face {
     font-family: "roboto" ;
-    src: url("./fonts/Roboto-Regular.ttf");
+    src: url("./fonts/Roboto-Condensed.ttf");
 }
 
 @font-face {
     font-family: "bondoni" ;
     src: url("./fonts/NotoSerif-VariableFont_wdth\,wght.ttf");
+}
+
+.email_container{
+    display: flex;
+}
+
+.email_container > div:last-child{
+    position: absolute;
+    background: yellow;
+    font-size: 12px;
+    width: 40px !important;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    margin-left: 10px;
 }
 
 input,
@@ -69,7 +86,7 @@ select:focus{
 
 /*------------------------------------- Top Header ------------------------------------------*/
 body{
-    font-family: "bondoni";
+    font-family: "roboto";
     background: var(--body);
 }
 .nav-bar{
