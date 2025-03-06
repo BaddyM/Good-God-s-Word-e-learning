@@ -8,4 +8,5 @@ Route::prefix("Tutor")->middleware(['auth','admin-tutor'])->group(function(){
     Route::post("/CourseData",[TutorController::class,'courses_data'])->name("tutor.course.data");
     Route::post("/AddCourse",[TutorController::class,'add_course'])->name("tutor.course.add");
     Route::post("/DeleteCourse",[TutorController::class,'delete_course'])->name("tutor.course.delete");
+    Route::post("/UpdateCourse",[TutorController::class,'update_course'])->name("tutor.course.update");
 });

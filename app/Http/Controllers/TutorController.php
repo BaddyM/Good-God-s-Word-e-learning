@@ -94,11 +94,23 @@ class TutorController extends Controller
             ->addColumn("action", function ($data) {
                 $action = "";
                 $action .= "
-                        <div>
-                            <button class='btn border-0 btn-sm rounded-5 btn-outline-danger delete_course' title='Delete Course' data-id='" . $data->id . "'><i class='fa fa-trash'></i></button>
-                        </div>
+                            <button 
+                                class='btn border-0 btn-sm rounded-5 btn-outline-success update_course' 
+                                title='Update Course' 
+                                data-id='" . $data->id . "'
+                                data-title='".$data->title."'
+                                data-description='".$data->description."'
+                                data-material='".$data->material."'
+                                data-hours='".explode(":",$data->length)[0]."'
+                                data-mins='".explode(":",$data->length)[1]."'
+                                data-level='".$data->level."'
+                            ><i class='fa fa-pen'></i></button>
                     ";
-                return "<div class='text-center'>$action</div>";
+
+                $action .= "
+                        <button class='btn border-0 btn-sm rounded-5 btn-outline-danger delete_course' title='Delete Course' data-id='" . $data->id . "'><i class='fa fa-trash'></i></button>
+                ";
+                return "<div class='text-center d-block'>$action</div>";
             })
             ->editColumn("material", function ($data) {
                 if ($data->type == 'image') {
@@ -110,11 +122,12 @@ class TutorController extends Controller
                             <video style='width:200px; height:200px; object-fit:contain;' controls src='/materials/$data->id/$data->material'></video>
                         ";
                 } else {
-                    $material = '<div style="width:200px; height:200px;">
-                                    <iframe style="width:200px; height:200px;" class="img-fluid"
+                    $material = '<div class="course_video_admin">
+                                    <iframe style="width:200px; height:200px;" class="img-fluid course_video"
                                     src="https://www.youtube.com/embed/'.$data->material.'" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    <div class="d-none oncontextmenu="return false;"></div>
                                 </div>';
                 }
                 return $material;
@@ -202,6 +215,38 @@ class TutorController extends Controller
             $response = "Delete Successfull";
         } catch (Exception $e) {
             $response = "Failed to Delete, Try Again!";
+        }
+        return response($response);
+    }
+
+    public function update_course(Request $req){
+        $course_id = $req->id;
+        $course_name = $req->course_name;
+        $desc = $req->description;
+        $level = $req->level;
+        $hours = $req->hours;
+        $mins = $req->minutes;
+        $link = $req->link;
+        $length = $hours.":".$mins;
+
+        try{
+            //Update the Course Table
+            DB::table("courses")->where("id",$course_id)->update([
+                "title" => $course_name,
+                "level" => $level,
+                "description" => $desc
+            ]);
+
+            //Update the Materials Table
+            DB::table("materials")->where("course_id",$course_id)->update([
+                "material" => $link,
+                "length" => $length
+            ]);
+
+            $response = "Update successfull";
+        }catch(Exception $e){
+            info($e);
+            $response = "Sorry, something went wrong!";
         }
         return response($response);
     }

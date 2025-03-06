@@ -34,36 +34,28 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-2" style="gap:10px;">
                                     <p class="mb-0 fw-bold h6 bg-secondary col-md-3 p-2 text-white rounded-1">Level </p>
-                                    <input type="text" name="course_level" value="{{ $level }}" readonly
-                                        class="form-control rounded-0 bg-light">
+                                    <input type="text" name="course_level" value="{{ $level }}" readonly class="form-control rounded-0 bg-light">
                                 </div>
                                 <div class="d-flex align-items-center mb-2" style="gap:10px;">
                                     <p class="mb-0 fw-bold h6 bg-secondary col-md-3 p-2 text-white rounded-1">Cost </p>
-                                    <input type="text" name="amount" value='{{ number_format($price) }}' readonly
-                                        class="form-control rounded-0 bg-light">
+                                    <input type="text" name="amount" value='{{ number_format($price) }}' readonly class="form-control rounded-0 bg-light">
                                 </div>
                                 <div class="mb-2" style="gap:10px;">
                                     <p class="mb-2 fw-bold h6">Payment Method</p>
                                     <!-- Nav tabs -->
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#home" type="button" role="tab" aria-controls="home"
-                                                aria-selected="true">
+                                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
                                                 MTN
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                                data-bs-target="#profile" type="button" role="tab"
-                                                aria-controls="profile" aria-selected="false">
+                                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
                                                 Airtel
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="messages-tab" data-bs-toggle="tab"
-                                                data-bs-target="#messages" type="button" role="tab"
-                                                aria-controls="messages" aria-selected="false">
+                                            <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">
                                                 Debit/Credit Card
                                             </button>
                                         </li>
@@ -71,12 +63,10 @@
 
                                     <!-- Tab panes -->
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="home" role="tabpanel"
-                                            aria-labelledby="home-tab">
+                                        <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                             <div class="d-flex align-items-center my-3" style="gap:10px;">
                                                 <label class="form-label h6 fw-bold">MTN Mobile Money</label>
-                                                <input type="radio" class="form-check-radio"
-                                                    style="width:20px; height:20px;" name="payment_method" value="MTN">
+                                                <input type="radio" class="form-check-radio" style="width:20px; height:20px;" name="payment_method" value="MTN">
                                             </div>
                                             <div class="d-flex align-items-center" style="gap:5px;">
                                                 <label class="form-label h6 fw-bold mb-0">Number</label>
@@ -86,21 +76,17 @@
                                         <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                             <div class="d-flex align-items-center my-3" style="gap:10px;">
                                                 <label class="form-label h6 fw-bold">Airtel Money</label>
-                                                <input type="radio" class="form-check-radio"
-                                                    style="width:20px; height:20px;" name="payment_method" value="Airtel">
+                                                <input type="radio" class="form-check-radio" style="width:20px; height:20px;" name="payment_method" value="Airtel">
                                             </div>
                                             <div class="d-flex align-items-center" style="gap:5px;">
                                                 <label class="form-label h6 fw-bold mb-0">Number</label>
                                                 <input type="number" value="0754654641" class="form-control" readonly>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="messages" role="tabpanel"
-                                            aria-labelledby="messages-tab">
+                                        <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                                             <div class="d-flex align-items-center my-3" style="gap:10px;">
                                                 <label class="form-label h6 fw-bold">Debit/Credit Card</label>
-                                                <input type="radio" class="form-check-radio"
-                                                    style="width:20px; height:20px;" name="payment_method"
-                                                    value="Debit/Credit Card">
+                                                <input type="radio" class="form-check-radio" style="width:20px; height:20px;" name="payment_method" value="Debit/Credit Card">
                                             </div>
                                             <div>
                                                 <div class="col-md-8">
@@ -151,6 +137,14 @@
             </div>
         @elseif($status == 'incomplete' && $pay_status == 'confirmed')
             {{-- - Display course material - --}}
+            <div class="col-md-4">
+                <div class="alert alert-danger">
+                    <strong>Note: </strong><br>
+                    <hr class="my-1">
+                    <i class="bi bi-chevron-double-right"></i> Copying or Sharing youtube links is unadvisable and will lead to closure of account with immedidate effect.
+                </div>
+            </div>
+
             <div>
                 @foreach ($course as $c)
                     <div class="col-md-12 my-4">
@@ -158,10 +152,7 @@
                             <div class="card-header">
                                 <p class="mb-0 fw-bold" id="course_{{ $c->course_id }}_timer"></p>
                             </div>
-                            <iframe class="img-fluid material-video"
-                                src="https://www.youtube.com/embed/{{ $c->material }}" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <iframe class="img-fluid material-video" src="https://www.youtube.com/embed/{{ $c->material }}?rel=0&modestbranding=1&showinfo=0&autohide=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <p class="col-md-2 fw-bold mb-0">Title</p>
@@ -195,14 +186,13 @@
                     <form id="course_complete_form" method="post">
                         @csrf
                         <input type="hidden" name="level" value="{{ $level }}">
-                        <button type="submit" class="btn btn-success bg-gradient fw-bold shadow-sm"><i
-                                class="fa fa-circle-check"></i> Mark as complete</button>
+                        <button type="submit" class="btn btn-success bg-gradient fw-bold shadow-sm"><i class="fa fa-circle-check"></i> Mark as complete</button>
                     </form>
                 @else
-                <div class="alert alert-warning mt-3 col-md-4 shadow-sm">
-                    <Strong>Sorry</Strong> <br>
-                    <p class="mb-0">No material has been uploaded yet!</p>
-                </div>
+                    <div class="alert alert-warning mt-3 col-md-4 shadow-sm">
+                        <Strong>Sorry</Strong> <br>
+                        <p class="mb-0">No material has been uploaded yet!</p>
+                    </div>
                 @endif
             </div>
         @elseif($status == 'complete')
@@ -223,7 +213,7 @@
     </div>
 @endsection
 
-@push('scripts')
+@push('scripts')  
     <script>
         $(document).ready(function() {
             $("#course_complete_form").on("submit", function(e) {
